@@ -23,28 +23,33 @@ class solution:
         self.set_statingPoint()
         position =  0
         self.fitness = 0
+        last_step = 4
         while (position != 7):
             step = random.randint(0, 3)
             #Goes Right
-            if (step == 0) and(matrix[self.position_x+1][self.position_y] != 9):
+            if (step == 0) and(matrix[self.position_x+1][self.position_y] != 9) and (last_step != 2):
                 position = matrix[self.position_x+1][self.position_y]
                 self.fitness = self.fitness + 1 + position
                 self.chromozones.append(step)
+                last_step = step
             #Goes Up
-            if (step == 0) and(matrix[self.position_x][self.position_y+1] != 9):
+            if (step == 1) and(matrix[self.position_x][self.position_y+1] != 9) and (last_step != 3):
                 position = matrix[self.position_x][self.position_y+1]
                 self.fitness = self.fitness + 1 + position
                 self.chromozones.append(step)
+                last_step = step
             #Goes Left
-            if (step == 0) and(matrix[self.position_x-1][self.position_y] != 9):
+            if (step == 2) and(matrix[self.position_x-1][self.position_y] != 9) and (last_step != 0):
                 position = matrix[self.position_x-1][self.position_y]
                 self.fitness = self.fitness + 1 + position
                 self.chromozones.append(step)   
+                last_step = step
             #Goes Down
-            if (step == 0) and(matrix[self.position_x][self.position_y-1] != 9):
+            if (step == 3) and (matrix[self.position_x][self.position_y-1] != 9) and (last_step != 1):
                 position = matrix[self.position_x][self.position_y-1]
                 self.fitness = self.fitness + 1 + position
                 self.chromozones.append(step)
+                last_step = step
             
         return
     
