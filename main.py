@@ -1,4 +1,6 @@
 #   Main.py
+import numpy #sudo apt-get install python-numpy
+
 
 # Matrix
 #-------
@@ -63,7 +65,7 @@ class maze:
     # Define initials parameters
     def __init__(self, population, iterations):
         self.finish =  false
-        self.matrix = [[]]
+        self.matrix = numpy.zeros(shape=(8,8))
         self.population = []
         self.population_number = population
         self.iteration = 0
@@ -71,6 +73,39 @@ class maze:
     # Load the map with the access and exit point
     def loadMap(self):
         # Hardcodear matris al principio, despues vemos si hacemos otra cosa
+
+        for i in range(0, 8):
+            for j in range(0, 7):
+                self.matrix[i][j]=0
+        for i in range(0, 8):
+            self.matrix[i][0]=9
+        for j in range(0, 8):
+            self.matrix[7][j]=9
+        for j in range(0, 8):
+            self.matrix[0][j]=9
+        for i in range(0, 8):
+            self.matrix[i][7]=9
+
+        self.matrix[6][1] = 9
+        self.matrix[6][2] = 9
+        self.matrix[6][3] = 9
+        self.matrix[3][7] = 7
+        self.matrix[1][7] = 8
+        self.matrix[2][2] = 9
+        self.matrix[3][2] = 9
+        self.matrix[4][2] = 9
+        self.matrix[4][3] = 9
+        self.matrix[2][4] = 9
+        self.matrix[3][4] = 9
+        self.matrix[4][4] = 9
+        self.matrix[2][5] = 9
+        self.matrix[3][5] = 9
+        self.matrix[4][5] = 9
+        self.matrix[5][5] = 9
+        self.matrix[2][6] = 9
+
+        #print matrix
+
         return
     # Creates the initial population
     def init_population(self):
