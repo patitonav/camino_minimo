@@ -75,9 +75,6 @@ class maze:
         # Hardcodear matris al principio, despues vemos si hacemos otra cosa
 
         for i in range(0, 8):
-            for j in range(0, 7):
-                self.matrix[i][j]=0
-        for i in range(0, 8):
             self.matrix[i][0]=9
         for j in range(0, 8):
             self.matrix[7][j]=9
@@ -89,7 +86,7 @@ class maze:
         self.matrix[6][1] = 9
         self.matrix[6][2] = 9
         self.matrix[6][3] = 9
-        self.matrix[3][7] = 7
+        self.matrix[3][6] = 7
         self.matrix[1][7] = 8
         self.matrix[2][2] = 9
         self.matrix[3][2] = 9
@@ -104,7 +101,7 @@ class maze:
         self.matrix[5][5] = 9
         self.matrix[2][6] = 9
 
-        #print matrix
+        print matrix
 
         return
     # Creates the initial population
