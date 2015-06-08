@@ -1,16 +1,54 @@
 #   Main.py
 
+# Matrix
+#-------
+# 9: Wall
+# 8: Starting Point
+# 7: Finish Point
+# (1-6): Diferent obstacles
+# 0: Walkable
 class solution:
     def __init__(self, matrix):
         self.chromozones = []
-        self.run(matrix)
         self.fitness = 99999
+        self.position_x
+        self.position_y
+        self.run(matrix)
     
     # Make a solution for the maze and get fitness
     # and sets the fitness
     def run(self, matrix):
+        self.set_statingPoint()
+        position =  0
+        self.fitness = 0
+        while (position != 7):
+            step = random.randint(0, 3)
+            #Goes Right
+            if (step == 0) and(matrix[self.position_x+1][self.position_y] != 9):
+                position = matrix[self.position_x+1][self.position_y]
+                self.fitness = self.fitness + 1 + position
+                self.chromozones.append(step)
+            #Goes Up
+            if (step == 0) and(matrix[self.position_x][self.position_y+1] != 9):
+                position = matrix[self.position_x][self.position_y+1]
+                self.fitness = self.fitness + 1 + position
+                self.chromozones.append(step)
+            #Goes Left
+            if (step == 0) and(matrix[self.position_x-1][self.position_y] != 9):
+                position = matrix[self.position_x-1][self.position_y]
+                self.fitness = self.fitness + 1 + position
+                self.chromozones.append(step)   
+            #Goes Down
+            if (step == 0) and(matrix[self.position_x][self.position_y-1] != 9):
+                position = matrix[self.position_x][self.position_y-1]
+                self.fitness = self.fitness + 1 + position
+                self.chromozones.append(step)
+            
         return
     
+    # Finds and set the stating position    
+    def set_statingPoint(self):
+        return
     # Get fitness for the solution    
     def get_fitness(self):
         return self.fitness
@@ -71,7 +109,6 @@ def main():
         maze.mutate()
         maze.mate()
         maze.calc_fitness()
-    
     winner = maze.getWinner()
     winner.print_solution()
 if __name__ == '__main__':
