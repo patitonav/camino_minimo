@@ -1,4 +1,6 @@
+#!/usr/bin/env python
 # This Python file uses the following encoding: utf-8
+# -*- coding: utf-8 -*-
 import numpy  # sudo apt-get install python-numpy
 import random
 
@@ -71,7 +73,7 @@ class Solution:
     def print_solution(self):
         print self.matrix
         # TODO: imprimir matriz resuelta
-        print "Camino mínimo: " + ', '.join([str(chrom) for chrom in self.chromosomes])
+        print "Camino mínimo: " + ", ".join([str(chrom) for chrom in self.chromosomes])
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -114,25 +116,15 @@ class Maze():
             self.matrix[0][j] = 9
         for i in range(0, 8):
             self.matrix[i][7] = 9
-        self.matrix[6][1] = 9
-        self.matrix[6][2] = 9
-        self.matrix[6][3] = 9
         self.matrix[3][6] = 7
         self.matrix[1][7] = 8
-        self.matrix[2][2] = 9
-        self.matrix[2][3] = 9
-        self.matrix[3][2] = 9
-        self.matrix[3][3] = 9
-        self.matrix[4][2] = 9
-        self.matrix[4][3] = 9
-        self.matrix[2][4] = 9
-        self.matrix[3][4] = 9
-        self.matrix[4][4] = 9
-        self.matrix[2][5] = 9
-        self.matrix[3][5] = 9
-        self.matrix[4][5] = 9
-        self.matrix[5][5] = 9
-        self.matrix[2][6] = 9
+        self.matrix[2][2] = 1
+        self.matrix[3][2] = 3
+        self.matrix[4][3] = 6
+        self.matrix[2][4] = 5
+        self.matrix[2][5] = 4
+        self.matrix[5][5] = 3
+        self.matrix[2][6] = 2
         # print self.matrix
         self.set_stating_point()
 
