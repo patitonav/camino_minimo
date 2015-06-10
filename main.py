@@ -15,7 +15,25 @@ FINISH_POINT = 7
 STARTING_POINT = 8
 
 
+class Chromosome():
+
+    def __init__(self, x, y, step):
+        self.x = x
+        self.y = y
+        self.step = step
+
+    @property
+    def position(self):
+        return self.x, self.y
+
+
 class Solution:
+
+    X_DELTA_LIST = [1, 0, -1, 0]
+    Y_DELTA_LIST = [0, 1, 0, -1]
+    # Penalidad por pasar por un obstaculo, da mayor prefencia a soluciones sin obtáculos
+    OBSTACLE_PENALTY = 1000
+
     def __init__(self, maze):
         self.chromosomes = []
         self.fitness = 99999
@@ -25,45 +43,25 @@ class Solution:
 
     # Make a solution for the maze and get fitness and sets the fitness
     def run(self):
-        matrix = self.matrix
         position = 0
-        self.fitness = 0
-        last_step = 4
+        fitness = 0
         while position != FINISH_POINT:
-            step = random.randint(0, 3)
+            step = random.randint(0, 3)  # 0: DOWN, 1: RIGHT, 2: UP, 3: LEFT
+            dx = self.X_DELTA_LIST[step]
+            dy = self.Y_DELTA_LIST[step]
             try:
-                # Goes DOWN
-                if (step == 0) and (matrix[self.position_x + 1][self.position_y] != 9) and (last_step != 2):
-                    position = matrix[self.position_x + 1][self.position_y]
-                    self.fitness = self.fitness + 1 + position
-                    self.chromosomes.append(step)
-                    last_step = step
-                    self.position_x += 1
-                # Goes RIGHT
-                elif (step == 1) and (matrix[self.position_x][self.position_y + 1] != 9) and (last_step != 3):
-                    position = matrix[self.position_x][self.position_y + 1]
-                    self.fitness = self.fitness + 1 + position
-                    self.chromosomes.append(step)
-                    last_step = step
-                    self.position_y += 1
-                # Goes UP
-                elif (step == 2) and (matrix[self.position_x - 1][self.position_y] != 9) and (last_step != 0):
-                    position = matrix[self.position_x - 1][self.position_y]
-                    self.fitness = self.fitness + 1 + position
-                    self.chromosomes.append(step)
-                    last_step = step
-                    self.position_x -= 1
-                # Goes LEFT
-                elif (step == 3) and (matrix[self.position_x][self.position_y - 1] != 9) and (last_step != 1):
-                    position = matrix[self.position_x][self.position_y - 1]
-                    self.fitness = self.fitness + 1 + position
-                    self.chromosomes.append(step)
-                    last_step = step
-                    self.position_y -= 1
-                # No lo borren sirve para encontrar puntos sin salida en laberintos
-                # print "%d,%d" % (self.position_x, self.position_y)
+                position = self.matrix[self.position_x + dx][self.position_y + dy]
+
+                fitness = fitness + 1 + position * self.OBSTACLE_PENALTY
+                # actualizo la posicion actual
+                self.position_x += dx
+                self.position_y += dy
+                # agrego los datos del cromosoma
+                self.chromosomes.append(Chromosome(self.position_x, self.position_y, step))
             except IndexError as error:
-                print error
+                position = 0
+        self.fitness = fitness
+
 
     # Get fitness for the solution    
     def get_fitness(self):
@@ -71,9 +69,9 @@ class Solution:
 
     # Print the solution in screen    
     def print_solution(self):
-        print self.matrix
         # TODO: imprimir matriz resuelta
-        print "Camino mínimo: " + ", ".join([str(chrom) for chrom in self.chromosomes])
+        print "Camino mínimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
+        print "Direcciones: " + ", ".join([str(chrom.step) for chrom in self.chromosomes])
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -125,7 +123,7 @@ class Maze():
         self.matrix[2][5] = 4
         self.matrix[5][5] = 3
         self.matrix[2][6] = 2
-        # print self.matrix
+        print self.matrix
         self.set_stating_point()
 
     # Creates the initial population
@@ -133,6 +131,7 @@ class Maze():
         for i in range(self.population_number):
             a_solution = Solution(self)
             a_solution.run()
+            # a_solution.print_solution()
             self.population.append(a_solution)
 
     # Evaluates if we arrived to a good solution
@@ -147,7 +146,6 @@ class Maze():
     # Order the list by fitness
     def calc_fitness(self):
         self.population.sort(key=lambda solution: solution.get_fitness())
-        pass
 
     # Mutates the solutions according to the
     # parameters passed on the init
@@ -158,15 +156,16 @@ class Maze():
     # parameters passed on the initialization
     def mate(self):
         pass
-        # Return the solution with best fitness score
 
+
+    # Return the solution with best fitness score
     def get_winner(self):
         return self.population[0]
 
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(3, 10)
+    maze = Maze(25000, 1)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
@@ -176,6 +175,7 @@ def main():
         maze.calc_fitness()
         maze.iteration += 1
     winner = maze.get_winner()
+    print maze.matrix
     winner.print_solution()
 
 
