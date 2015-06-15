@@ -40,12 +40,13 @@ class Solution:
     # Penalidad por pasar por un obstaculo, da mayor prefencia a soluciones sin obtáculos
     OBSTACLE_PENALTY = 1000
 
-    def __init__(self, maze):
+    def __init__(self, maze=None):
         self.chromosomes = []
         self.fitness = 99999
-        self.position_x = maze.position_x
-        self.position_y = maze.position_y
-        self.matrix = maze.matrix
+        if maze:
+            self.position_x = maze.position_x
+            self.position_y = maze.position_y
+            self.matrix = maze.matrix
 
     # Make a solution for the maze and get fitness and sets the fitness
     def run(self):
@@ -58,7 +59,9 @@ class Solution:
             try:
                 position = self.matrix[self.position_x + dx][self.position_y + dy]
 
-                fitness = fitness + 1 + position * self.OBSTACLE_PENALTY
+                fitness += 1
+                if position != FINISH_POINT:
+                    fitness += position * self.OBSTACLE_PENALTY
                 # actualizo la posicion actual
                 self.position_x += dx
                 self.position_y += dy
@@ -71,6 +74,7 @@ class Solution:
     # Print the solution in screen
     def print_solution(self):
         # TODO: imprimir matriz resuelta
+        print "Fitness: %d" % self.fitness
         print "Camino mínimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
         print "Direcciones: " + ", ".join([str(chrom.step) for chrom in self.chromosomes])
 
@@ -79,7 +83,7 @@ class Solution:
             self.fitness = value
         else:
             fitness = 0
-            for chrom in self.chromosomes:
+            for chrom in self.chromosomes[:-1]:
                 fitness += self.matrix[chrom.x][chrom.y]
             fitness *= self.OBSTACLE_PENALTY
             fitness += len(self.chromosomes)
@@ -104,6 +108,46 @@ class Solution:
             if index >= len(new_chromosomes_list):
                 loop_found = False
         self.chromosomes = new_chromosomes_list
+        self.update_fitness()
+
+    def mate(self, another_solution):
+        found = False
+        children = []
+        found = False
+        for index in range(len(self.chromosomes)):
+            try:
+                mate_index = another_solution.chromosomes.index(self.chromosomes[index])
+            except ValueError:
+                pass
+            else:
+                # print "PADRE"
+                # self.print_solution()
+                # print "OTRO PADRE"
+                # another_solution.print_solution()
+                found = True
+                break
+        if found:
+            a_new_solution = Solution()
+            a_new_solution.chromosomes = self.chromosomes[:index] + another_solution.chromosomes[mate_index:]
+            a_new_solution.fitness = 99999
+            a_new_solution.position_x = self.position_x
+            a_new_solution.position_y = self.position_y
+            a_new_solution.matrix = self.matrix
+            a_new_solution.update_fitness()
+            # print "Un HIJO"
+            # a_new_solution.print_solution()
+            children.append(a_new_solution)
+            a_new_solution = Solution()
+            a_new_solution.chromosomes = another_solution.chromosomes[:mate_index] + self.chromosomes[index:]
+            a_new_solution.fitness = 99999
+            a_new_solution.position_x = self.position_x
+            a_new_solution.position_y = self.position_y
+            a_new_solution.matrix = self.matrix
+            a_new_solution.update_fitness()
+            # print "Otro HIJO"
+            # a_new_solution.print_solution()
+            children.append(a_new_solution)
+        return children
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -119,6 +163,8 @@ class Maze():
         self.max_iteration = iterations
         self.position_x = None
         self.position_y = None
+        # TODO: Lo pongo para hacer pruebas
+        self.best_posible = 20
 
     def set_stating_point(self):
 
@@ -146,7 +192,7 @@ class Maze():
             self.matrix[0][j] = 9
         for i in range(0, 8):
             self.matrix[i][7] = 9
-        self.matrix[3][6] = 7
+        self.matrix[6][3] = 7
         self.matrix[1][7] = 8
         self.matrix[2][2] = 1
         self.matrix[3][2] = 3
@@ -163,6 +209,7 @@ class Maze():
         for i in range(self.population_number):
             a_solution = Solution(self)
             a_solution.run()
+            a_solution.eliminate_loops()
             # a_solution.print_solution()
             self.population.append(a_solution)
 
@@ -171,8 +218,8 @@ class Maze():
         if self.iteration >= self.max_iteration:
             self.finish = True
         # TODO: Dar un valor a self.best_posible
-        # elif self.population[0].fitness <= self.best_posible:
-        #     self.finish = True
+        elif self.population[0].fitness <= self.best_posible:
+            self.finish = True
         return self.finish
 
     # Order the list by fitness
@@ -185,19 +232,25 @@ class Maze():
 
     # Mates the solutions according to the  parameters passed on the initialization
     def mate(self):
-        pass
+        mating_subjects = self.population[:5]
+        for i in range(len(mating_subjects)):
+            a_subject = self.population[i]
+            for j in range(5-i-1):
+                another_subject = self.population[i + j + 1]
+                children = a_subject.mate(another_subject)
+                self.population.extend(children)
 
     # Return the solution with best fitness score
     def get_winner(self):
         return self.population[0]
 
     def select(self):
-        self.population = self.population[:30]
+        self.population = self.population[:40]
 
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(100, 1)
+    maze = Maze(500, 1000)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
