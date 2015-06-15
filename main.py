@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # This Python file uses the following encoding: utf-8
-# -*- coding: utf-8 -*-
+
 import numpy  # sudo apt-get install python-numpy
 import random
 
@@ -25,6 +25,12 @@ class Chromosome():
     @property
     def position(self):
         return self.x, self.y
+
+    def __eq__(self, other):
+        if isinstance(other, Chromosome):
+            return self.position == other.position
+        else:
+            return NotImplemented
 
 
 class Solution:
@@ -62,16 +68,42 @@ class Solution:
                 position = 0
         self.fitness = fitness
 
-
-    # Get fitness for the solution    
-    def get_fitness(self):
-        return self.fitness
-
-    # Print the solution in screen    
+    # Print the solution in screen
     def print_solution(self):
         # TODO: imprimir matriz resuelta
         print "Camino mínimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
         print "Direcciones: " + ", ".join([str(chrom.step) for chrom in self.chromosomes])
+
+    def update_fitness(self, value=None):
+        if value:
+            self.fitness = value
+        else:
+            fitness = 0
+            for chrom in self.chromosomes:
+                fitness += self.matrix[chrom.x][chrom.y]
+            fitness *= self.OBSTACLE_PENALTY
+            fitness += len(self.chromosomes)
+            self.fitness = fitness
+
+    def eliminate_loops(self):
+        index = None
+        loop_found = True
+        new_chromosomes_list = list(self.chromosomes)
+        while loop_found:
+            index = 0
+            while index < len(new_chromosomes_list):
+                try:
+                    loop_index = new_chromosomes_list.index(new_chromosomes_list[index], index + 1)
+                except ValueError:
+                    loop_found = False
+                    index += 1
+                else:
+                    loop_found = True
+                    new_chromosomes_list = new_chromosomes_list[:index+1] + new_chromosomes_list[loop_index+1:]
+                    break
+            if index >= len(new_chromosomes_list):
+                loop_found = False
+        self.chromosomes = new_chromosomes_list
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -139,40 +171,42 @@ class Maze():
         if self.iteration >= self.max_iteration:
             self.finish = True
         # TODO: Dar un valor a self.best_posible
-        # elif self.population[0].get_fitness() <= self.best_posible:
+        # elif self.population[0].fitness <= self.best_posible:
         #     self.finish = True
         return self.finish
 
     # Order the list by fitness
     def calc_fitness(self):
-        self.population.sort(key=lambda solution: solution.get_fitness())
+        self.population.sort(key=lambda solution: solution.fitness)
 
-    # Mutates the solutions according to the
-    # parameters passed on the init
+    # Mutates the solutions according to the parameters passed on the init
     def mutate(self):
         pass
-        # Mates the solutions according to the
 
-    # parameters passed on the initialization
+    # Mates the solutions according to the  parameters passed on the initialization
     def mate(self):
         pass
-
 
     # Return the solution with best fitness score
     def get_winner(self):
         return self.population[0]
 
+    def select(self):
+        self.population = self.population[:30]
+
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(25000, 1)
+    maze = Maze(100, 1)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
+    maze.select()
     while not maze.has_finished():
-        maze.mutate()
         maze.mate()
+        maze.mutate()
         maze.calc_fitness()
+        maze.select()
         maze.iteration += 1
     winner = maze.get_winner()
     print maze.matrix
