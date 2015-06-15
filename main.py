@@ -13,7 +13,7 @@ import random
 # 0: Walkable
 FINISH_POINT = 7
 STARTING_POINT = 8
-
+MUTATION_NUMBER = 4
 
 class Chromosome():
 
@@ -225,6 +225,10 @@ class Maze():
     # Order the list by fitness
     def calc_fitness(self):
         self.population.sort(key=lambda solution: solution.fitness)
+
+    def split_chromosome(a_chromosome):
+        length = len(a_chromosome)
+        return [ a_list[i*length // MUTATION_NUMBER: (i+1)*length // MUTATION_NUMBER] for i in range(MUTATION_NUMBER) ]
 
     # Mutates the solutions according to the parameters passed on the init
     def mutate(self):
