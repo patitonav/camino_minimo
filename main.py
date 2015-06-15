@@ -17,14 +17,17 @@ MUTATION_NUMBER = 4
 
 class Chromosome():
 
-    def __init__(self, x, y, step):
+    def __init__(self, x, y, step, cost):
         self.x = x
         self.y = y
         self.step = step
+        self.cost= cost
 
     @property
     def position(self):
         return self.x, self.y
+    def get_cost(self):
+        return self.cost
 
     def __eq__(self, other):
         if isinstance(other, Chromosome):
@@ -66,7 +69,7 @@ class Solution:
                 self.position_x += dx
                 self.position_y += dy
                 # agrego los datos del cromosoma
-                self.chromosomes.append(Chromosome(self.position_x, self.position_y, step))
+                self.chromosomes.append(Chromosome(self.position_x, self.position_y, step,self.matrix[self.position_x,self.position_y]))
             except IndexError as error:
                 position = 0
         self.fitness = fitness
@@ -148,6 +151,11 @@ class Solution:
             # a_new_solution.print_solution()
             children.append(a_new_solution)
         return children
+
+    def mutate(self):
+        #Hacer la magia
+        #armar new solutions
+        return Solution()
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -232,6 +240,7 @@ class Maze():
 
     # Mutates the solutions according to the parameters passed on the init
     def mutate(self):
+        #Elegir cuales mutar y darle mutate y que te deevueva una mutacion
         pass
 
     # Mates the solutions according to the  parameters passed on the initialization
