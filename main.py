@@ -21,7 +21,7 @@ class Chromosome():
         self.x = x
         self.y = y
         self.step = step
-        self.cost= cost
+        self.cost = cost
 
     @property
     def position(self):
@@ -50,6 +50,12 @@ class Solution:
             self.position_x = maze.position_x
             self.position_y = maze.position_y
             self.matrix = maze.matrix
+
+    def get_chromosomes(self):
+        return self.chromosomes
+
+    def set_chromosomes(new_chromosomes):
+        self.chromosomes=new_chromosomes
 
     # Make a solution for the maze and get fitness and sets the fitness
     def run(self):
@@ -152,10 +158,42 @@ class Solution:
             children.append(a_new_solution)
         return children
 
+    def split_chromosomes(self):
+        a_solution=self.get_chromosomes()
+        length = len(a_solution)
+        return [ a_solution[i*length // MUTATION_NUMBER: (i+1)*length // MUTATION_NUMBER] for i in range(MUTATION_NUMBER) ]
+
+    def join_chromosomes(a_list_of_grouped_chromosomes):
+    return [j for i in a_list_of_grouped_chromosomes for j in i]
+    
+
+    # Mutates the solutions according to the parameters passed on the init
+    #Elegir cuales mutar y darle mutate y que te deevueva una mutacion
     def mutate(self):
-        #Hacer la magia
-        #armar new solutions
-        return Solution()
+        splitted_solution=self.split_chromosomes()
+        max_fitness=0
+        unfit_block_of_chromosomes=[]
+        index_in_splitted_solution=0
+        for i, block_of_chromosomes in enumerate(splitted_solution):
+            a_fitness=0
+            for chromosome in block_of_chromosomes:
+                a_fitness+=chromosome.get_cost()
+            if a_fitness > max_fitness:
+                max_fitness=a_fitness
+                unfit_block_of_chromosomes=block_of_chromosomes
+                index_in_splitted_solution=i
+      
+
+        #Arranca la joda
+        #Proceso de mutado de unfit_block_of_chromosomes
+        mutated_block_of_chromosomes=[Chromosome("CROMOSOMA_MUTADO","CROMOSOMA_MUTADO","CROMOSOMA_MUTADO","CROMOSOMA_MUTADO")]
+        #HARDCODEADO
+        #-------------
+
+        #reemplazo y unifico
+        splitted_solution[index_in_splitted_solution]=mutated_block_of_chromosomes
+        self.set_chromosomes(self.join_chromosomes(splitted_solution))
+        
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -234,13 +272,7 @@ class Maze():
     def calc_fitness(self):
         self.population.sort(key=lambda solution: solution.fitness)
 
-    def split_chromosome(a_chromosome):
-        length = len(a_chromosome)
-        return [ a_list[i*length // MUTATION_NUMBER: (i+1)*length // MUTATION_NUMBER] for i in range(MUTATION_NUMBER) ]
-
-    # Mutates the solutions according to the parameters passed on the init
     def mutate(self):
-        #Elegir cuales mutar y darle mutate y que te deevueva una mutacion
         pass
 
     # Mates the solutions according to the  parameters passed on the initialization
