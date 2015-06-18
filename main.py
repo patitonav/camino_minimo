@@ -54,7 +54,7 @@ class Solution:
     def get_chromosomes(self):
         return self.chromosomes
 
-    def set_chromosomes(new_chromosomes):
+    def set_chromosomes(self, new_chromosomes):
         self.chromosomes=new_chromosomes
 
     # Make a solution for the maze and get fitness and sets the fitness
@@ -163,8 +163,8 @@ class Solution:
         length = len(a_solution)
         return [ a_solution[i*length // MUTATION_NUMBER: (i+1)*length // MUTATION_NUMBER] for i in range(MUTATION_NUMBER) ]
 
-    def join_chromosomes(a_list_of_grouped_chromosomes):
-    return [j for i in a_list_of_grouped_chromosomes for j in i]
+    def join_chromosomes(self, a_list_of_grouped_chromosomes):
+        return [j for i in a_list_of_grouped_chromosomes for j in i]
     
 
     # Mutates the solutions according to the parameters passed on the init
@@ -193,6 +193,7 @@ class Solution:
             finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][1].x][splitted_solution[index_in_splitted_solution+1][1].y]
             #si no es el ultimo, se toma como finishing point el primero del siguiente
 
+        position = 0
         fitness = 0
         mutated_block_of_chromosomes=[]
 
@@ -217,7 +218,7 @@ class Solution:
         #reemplazo y unifico
         splitted_solution[index_in_splitted_solution]=mutated_block_of_chromosomes
         self.set_chromosomes(self.join_chromosomes(splitted_solution)) #transformo todo en una sola lista de nuevo.
-        
+        self.eliminate_loops()
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -297,7 +298,8 @@ class Maze():
         self.population.sort(key=lambda solution: solution.fitness)
 
     def mutate(self):
-        pass
+        for a_solution in self.population:
+            a_solution.mutate()
 
     # Mates the solutions according to the  parameters passed on the initialization
     def mate(self):
