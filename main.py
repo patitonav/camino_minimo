@@ -182,17 +182,41 @@ class Solution:
                 max_fitness=a_fitness
                 unfit_block_of_chromosomes=block_of_chromosomes
                 index_in_splitted_solution=i
-      
 
-        #Arranca la joda
-        #Proceso de mutado de unfit_block_of_chromosomes
-        mutated_block_of_chromosomes=[Chromosome("CROMOSOMA_MUTADO","CROMOSOMA_MUTADO","CROMOSOMA_MUTADO","CROMOSOMA_MUTADO")]
-        #HARDCODEADO
-        #-------------
+        last_position_x=splitted_solution[index_in_splitted_solution-1][-1].x
+        last_position_y=splitted_solution[index_in_splitted_solution-1][-1].y
+        #splitted_solution[index_in_splitted_solution-1][-1] indica el ultimo cromosoma del ultimo cacho antes del que hay que mudar
 
+        if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el último
+            finishing_point=FINISH_POINT
+        else:
+            finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][1].x][splitted_solution[index_in_splitted_solution+1][1].y]
+            #si no es el ultimo, se toma como finishing point el primero del siguiente
+
+        fitness = 0
+        mutated_block_of_chromosomes=[]
+
+        while position != finishing_point:
+            step = random.randint(0, 3)  # 0: DOWN, 1: RIGHT, 2: UP, 3: LEFT
+            dx = self.X_DELTA_LIST[step]
+            dy = self.Y_DELTA_LIST[step]
+            try:
+                position = self.matrix[last_position_x + dx][last_position_y + dy]
+                fitness += 1
+                if position != finishing_point:
+                    fitness += position * self.OBSTACLE_PENALTY
+                # actualizo la posicion actual
+                last_position_x += dx
+                last_position_y += dy
+                ###########
+                mutated_block_of_chromosomes.append(Chromosome(last_position_x, last_position_y, step,self.matrix[last_position_x,last_position_y]))
+            except IndexError as error:
+                position = 0
+        # self.fitness = fitness #ESTA LINEA NO VA CREO
+     #-------------
         #reemplazo y unifico
         splitted_solution[index_in_splitted_solution]=mutated_block_of_chromosomes
-        self.set_chromosomes(self.join_chromosomes(splitted_solution))
+        self.set_chromosomes(self.join_chromosomes(splitted_solution)) #transformo todo en una sola lista de nuevo.
         
 
 
