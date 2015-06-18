@@ -183,6 +183,8 @@ class Solution:
                 unfit_block_of_chromosomes=block_of_chromosomes
                 index_in_splitted_solution=i
 
+
+        print index_in_splitted_solution
         last_position_x=splitted_solution[index_in_splitted_solution-1][-1].x
         last_position_y=splitted_solution[index_in_splitted_solution-1][-1].y
         #splitted_solution[index_in_splitted_solution-1][-1] indica el ultimo cromosoma del ultimo cacho antes del que hay que mudar
@@ -213,7 +215,7 @@ class Solution:
                 mutated_block_of_chromosomes.append(Chromosome(last_position_x, last_position_y, step,self.matrix[last_position_x,last_position_y]))
             except IndexError as error:
                 position = 0
-        # self.fitness = fitness #ESTA LINEA NO VA CREO
+        self.fitness = fitness #ESTA LINEA NO VA CREO
      #-------------
         #reemplazo y unifico
         splitted_solution[index_in_splitted_solution]=mutated_block_of_chromosomes
@@ -333,7 +335,7 @@ def main():
         maze.select()
         maze.iteration += 1
     winner = maze.get_winner()
-    print maze.matrix
+    #print maze.matrix
     winner.print_solution()
 
 
