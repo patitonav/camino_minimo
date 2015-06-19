@@ -3,7 +3,7 @@
 
 import numpy  # sudo apt-get install python-numpy
 import random
-
+import pdb
 # Matrix
 # -------
 # 9: Wall
@@ -168,7 +168,6 @@ class Solution:
     
 
     # Mutates the solutions according to the parameters passed on the init
-    #Elegir cuales mutar y darle mutate y que te deevueva una mutacion
     def mutate(self):
         splitted_solution=self.split_chromosomes()
         max_fitness=0
@@ -192,7 +191,10 @@ class Solution:
         if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el último
             finishing_point=FINISH_POINT
         else:
-            finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][1].x][splitted_solution[index_in_splitted_solution+1][1].y]
+            try:
+                finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][1].x][splitted_solution[index_in_splitted_solution+1][1].y]
+            except:
+                pdb.set_trace()
             #si no es el ultimo, se toma como finishing point el primero del siguiente
 
         position = 0
@@ -203,6 +205,7 @@ class Solution:
             step = random.randint(0, 3)  # 0: DOWN, 1: RIGHT, 2: UP, 3: LEFT
             dx = self.X_DELTA_LIST[step]
             dy = self.Y_DELTA_LIST[step]
+            random.seed()
             try:
                 position = self.matrix[last_position_x + dx][last_position_y + dy]
                 fitness += 1
@@ -266,7 +269,7 @@ class Maze():
         for i in range(0, 8):
             self.matrix[i][7] = 9
         self.matrix[6][3] = 7
-        self.matrix[1][7] = 8
+        self.matrix[1][6] = 8
         self.matrix[2][2] = 1
         self.matrix[3][2] = 3
         self.matrix[4][3] = 6
@@ -323,7 +326,7 @@ class Maze():
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(500, 1000)
+    maze = Maze(1000, 1000)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
