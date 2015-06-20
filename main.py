@@ -15,6 +15,7 @@ FINISH_POINT = 7
 STARTING_POINT = 8
 MUTATION_NUMBER = 4
 
+
 class Chromosome():
 
     def __init__(self, x, y, step, cost):
@@ -26,7 +27,10 @@ class Chromosome():
     @property
     def position(self):
         return self.x, self.y
+
     def get_cost(self):
+        if self.cost == FINISH_POINT:
+            return 0
         return self.cost
 
     def __eq__(self, other):
@@ -34,6 +38,9 @@ class Chromosome():
             return self.position == other.position
         else:
             return NotImplemented
+
+    def __repr__(self):
+        return "(%d,%d), paso:%d, costo:%d" % (self.x, self.y, self.step, self.cost)
 
 
 class Solution:
@@ -66,16 +73,16 @@ class Solution:
             dx = self.X_DELTA_LIST[step]
             dy = self.Y_DELTA_LIST[step]
             try:
-                position = self.matrix[self.position_x + dx][self.position_y + dy]
-
-                fitness += 1
-                if position != FINISH_POINT:
-                    fitness += position * self.OBSTACLE_PENALTY
-                # actualizo la posicion actual
-                self.position_x += dx
-                self.position_y += dy
-                # agrego los datos del cromosoma
-                self.chromosomes.append(Chromosome(self.position_x, self.position_y, step,self.matrix[self.position_x,self.position_y]))
+                if self.position_x + dx > 0 and self.position_y + dy > 0:
+                    position = self.matrix[self.position_x + dx][self.position_y + dy]
+                    fitness += 1
+                    if position != FINISH_POINT:
+                        fitness += position * self.OBSTACLE_PENALTY
+                    # actualizo la posicion actual
+                    self.position_x += dx
+                    self.position_y += dy
+                    # agrego los datos del cromosoma
+                    self.chromosomes.append(Chromosome(self.position_x, self.position_y, step,self.matrix[self.position_x,self.position_y]))
             except IndexError as error:
                 position = 0
         self.fitness = fitness
@@ -169,62 +176,73 @@ class Solution:
 
     # Mutates the solutions according to the parameters passed on the init
     def mutate(self):
-        splitted_solution=self.split_chromosomes()
-        max_fitness=0
-        unfit_block_of_chromosomes=[]
-        index_in_splitted_solution=0
-        for i, block_of_chromosomes in enumerate(splitted_solution):
-            a_fitness=0
-            for chromosome in block_of_chromosomes:
-                a_fitness+=chromosome.get_cost()
-            if a_fitness > max_fitness:
-                max_fitness=a_fitness
-                unfit_block_of_chromosomes=block_of_chromosomes
-                index_in_splitted_solution=i
+        try:
+            splitted_solution=self.split_chromosomes()
+            max_fitness=0
+            unfit_block_of_chromosomes=[]
+            index_in_splitted_solution=0
+            for i, block_of_chromosomes in enumerate(splitted_solution):
+                a_fitness=0
+                for chromosome in block_of_chromosomes:
+                    a_fitness+=chromosome.get_cost()
+                if a_fitness > max_fitness:
+                    max_fitness=a_fitness
+                    unfit_block_of_chromosomes=block_of_chromosomes
+                    index_in_splitted_solution=i
 
 
-        print index_in_splitted_solution
-        last_position_x=splitted_solution[index_in_splitted_solution-1][-1].x
-        last_position_y=splitted_solution[index_in_splitted_solution-1][-1].y
-        #splitted_solution[index_in_splitted_solution-1][-1] indica el ultimo cromosoma del ultimo cacho antes del que hay que mudar
+            # print index_in_splitted_solution
+            if index_in_splitted_solution != 0:
+                last_position_x = splitted_solution[index_in_splitted_solution - 1][-1].x
+                last_position_y = splitted_solution[index_in_splitted_solution - 1][-1].y
+            else:
+                last_position_x = splitted_solution[0][0].x
+                last_position_y = splitted_solution[0][0].y
+            #splitted_solution[index_in_splitted_solution-1][-1] indica el ultimo cromosoma del ultimo cacho antes del que hay que mudar
 
-        if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el último
-            finishing_point=FINISH_POINT
-        else:
-            try:
-                finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][1].x][splitted_solution[index_in_splitted_solution+1][1].y]
-            except:
-                pdb.set_trace()
-            #si no es el ultimo, se toma como finishing point el primero del siguiente
+            if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el último
+                finishing_point = FINISH_POINT
+                finishing_x = splitted_solution[index_in_splitted_solution][-1].x
+                finishing_y = splitted_solution[index_in_splitted_solution][-1].y
+            else:
+                try:
+                    finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][0].x][splitted_solution[index_in_splitted_solution+1][0].y]
+                    finishing_x = splitted_solution[index_in_splitted_solution+1][0].x
+                    finishing_y = splitted_solution[index_in_splitted_solution+1][0].y
+                except Exception as error:
+                    print error
+                    pdb.set_trace()
+                #si no es el ultimo, se toma como finishing point el primero del siguiente
 
-        position = 0
-        fitness = 0
-        mutated_block_of_chromosomes=[]
+            position = 0
+            fitness = 0
+            mutated_block_of_chromosomes=[]
 
-        while position != finishing_point:
-            step = random.randint(0, 3)  # 0: DOWN, 1: RIGHT, 2: UP, 3: LEFT
-            dx = self.X_DELTA_LIST[step]
-            dy = self.Y_DELTA_LIST[step]
-            random.seed()
-            try:
-                position = self.matrix[last_position_x + dx][last_position_y + dy]
-                fitness += 1
-                if position != finishing_point:
-                    fitness += position * self.OBSTACLE_PENALTY
-                # actualizo la posicion actual
-                last_position_x += dx
-                last_position_y += dy
-                ###########
-                mutated_block_of_chromosomes.append(Chromosome(last_position_x, last_position_y, step,self.matrix[last_position_x,last_position_y]))
-            except IndexError as error:
-                position = 0
-        self.fitness = fitness #ESTA LINEA NO VA CREO
-     #-------------
-        #reemplazo y unifico
-        splitted_solution[index_in_splitted_solution]=mutated_block_of_chromosomes
-        self.set_chromosomes(self.join_chromosomes(splitted_solution)) #transformo todo en una sola lista de nuevo.
-        self.eliminate_loops()
-
+            while finishing_x != last_position_x and finishing_y != last_position_y:
+                step = random.randint(0, 3)  # 0: DOWN, 1: RIGHT, 2: UP, 3: LEFT
+                dx = self.X_DELTA_LIST[step]
+                dy = self.Y_DELTA_LIST[step]
+                try:
+                    if self.position_x + dx > 0 and self.position_y + dy > 0:
+                        position = self.matrix[last_position_x + dx][last_position_y + dy]
+                        fitness += 1
+                        if position != finishing_point:
+                            fitness += position * self.OBSTACLE_PENALTY
+                        # actualizo la posicion actual
+                        last_position_x += dx
+                        last_position_y += dy
+                        ###########
+                        mutated_block_of_chromosomes.append(Chromosome(last_position_x, last_position_y, step,self.matrix[last_position_x,last_position_y]))
+                except IndexError as error:
+                    position = 0
+         #-------------
+            #reemplazo y unifico
+            splitted_solution[index_in_splitted_solution]=mutated_block_of_chromosomes
+            self.set_chromosomes(self.join_chromosomes(splitted_solution)) #transformo todo en una sola lista de nuevo.
+            self.eliminate_loops()
+            self.update_fitness()
+        except Exception as error:
+            print error
 
 # Contains all the information about the Maze  and how to solve it
 class Maze():
@@ -321,12 +339,14 @@ class Maze():
         return self.population[0]
 
     def select(self):
-        self.population = self.population[:40]
+        TOP = 20
+        index = random.randint(TOP, len(self.population) - 1)
+        self.population = self.population[:TOP] + self.population[index:TOP + index]
 
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(1000, 1000)
+    maze = Maze(100, 5)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
@@ -343,4 +363,5 @@ def main():
 
 
 if __name__ == '__main__':
+    random.seed()
     main()
