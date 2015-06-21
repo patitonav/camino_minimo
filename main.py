@@ -40,7 +40,7 @@ class Chromosome():
             return NotImplemented
 
     def __repr__(self):
-        return "(%d,%d), paso:%d, costo:%d" % (self.x, self.y, self.step, self.cost)
+        return "(%d,%d), paso:%d, costo:%d" % (self.x, self.y, self.step, self.get_cost())
 
 
 class Solution:
@@ -54,8 +54,8 @@ class Solution:
         self.chromosomes = []
         self.fitness = 99999
         if maze:
-            self.position_x = maze.position_x
-            self.position_y = maze.position_y
+            self.position_x = maze.initial_position_x
+            self.position_y = maze.initial_position_y
             self.matrix = maze.matrix
 
     def get_chromosomes(self):
@@ -190,14 +190,18 @@ class Solution:
                     unfit_block_of_chromosomes=block_of_chromosomes
                     index_in_splitted_solution=i
 
-
+            mutated_block_of_chromosomes=[]
             # print index_in_splitted_solution
             if index_in_splitted_solution != 0:
                 last_position_x = splitted_solution[index_in_splitted_solution - 1][-1].x
                 last_position_y = splitted_solution[index_in_splitted_solution - 1][-1].y
             else:
-                last_position_x = splitted_solution[0][0].x
-                last_position_y = splitted_solution[0][0].y
+                first_chromosome = splitted_solution[0][0]
+                # Cargo el primer cromosoma
+                mutated_block_of_chromosomes.append(first_chromosome)
+                # Su posicion es la ultima visitada
+                last_position_x = first_chromosome.x
+                last_position_y = first_chromosome.y
             #splitted_solution[index_in_splitted_solution-1][-1] indica el ultimo cromosoma del ultimo cacho antes del que hay que mudar
 
             if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el último
@@ -209,6 +213,7 @@ class Solution:
                     finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][0].x][splitted_solution[index_in_splitted_solution+1][0].y]
                     finishing_x = splitted_solution[index_in_splitted_solution+1][0].x
                     finishing_y = splitted_solution[index_in_splitted_solution+1][0].y
+
                 except Exception as error:
                     print error
                     pdb.set_trace()
@@ -216,14 +221,13 @@ class Solution:
 
             position = 0
             fitness = 0
-            mutated_block_of_chromosomes=[]
 
-            while finishing_x != last_position_x and finishing_y != last_position_y:
+            while finishing_x != last_position_x or finishing_y != last_position_y:
                 step = random.randint(0, 3)  # 0: DOWN, 1: RIGHT, 2: UP, 3: LEFT
                 dx = self.X_DELTA_LIST[step]
                 dy = self.Y_DELTA_LIST[step]
                 try:
-                    if self.position_x + dx > 0 and self.position_y + dy > 0:
+                    if last_position_x + dx > 0 and last_position_y + dy > 0:
                         position = self.matrix[last_position_x + dx][last_position_y + dy]
                         fitness += 1
                         if position != finishing_point:
@@ -244,6 +248,7 @@ class Solution:
         except Exception as error:
             print error
 
+
 # Contains all the information about the Maze  and how to solve it
 class Maze():
 
@@ -255,10 +260,10 @@ class Maze():
         self.population_number = population
         self.iteration = 0
         self.max_iteration = iterations
-        self.position_x = None
-        self.position_y = None
+        self.initial_position_x = None
+        self.initial_position_y = None
         # TODO: Lo pongo para hacer pruebas
-        self.best_posible = 20
+        self.best_posible = 9
 
     def set_stating_point(self):
 
@@ -267,11 +272,11 @@ class Maze():
             y = 0
             for col in row:
                 if col == STARTING_POINT:
-                    self.position_x = x
-                    self.position_y = y
+                    self.initial_position_x = x
+                    self.initial_position_y = y
                     break
                 y += 1
-            if self.position_x and self.position_y:
+            if self.initial_position_x and self.initial_position_y:
                 break
             x += 1
 
@@ -346,7 +351,7 @@ class Maze():
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(100, 5)
+    maze = Maze(500, 50)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
