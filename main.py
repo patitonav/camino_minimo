@@ -4,6 +4,8 @@
 import numpy  # sudo apt-get install python-numpy
 import random
 import pdb
+from unicodedata import *
+
 # Matrix
 # -------
 # 9: Wall
@@ -87,12 +89,22 @@ class Solution:
                 position = 0
         self.fitness = fitness
 
+
+
+    def print_directions(self,string_directions):
+        string_directions=string_directions.replace("0", u"↓");
+        string_directions=string_directions.replace("1", u"→");
+        string_directions=string_directions.replace("2", u"↑");
+        string_directions=string_directions.replace("3", u"←");
+        return string_directions
+
+
     # Print the solution in screen
     def print_solution(self):
         # TODO: imprimir matriz resuelta
         print "Fitness: %d" % self.fitness
         print "Camino mínimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
-        print "Direcciones: " + ", ".join([str(chrom.step) for chrom in self.chromosomes])
+        print "Direcciones: " + self.print_directions(", ".join([str(chrom.step) for chrom in self.chromosomes]))
 
     def update_fitness(self, value=None):
         if value:
