@@ -4,6 +4,7 @@
 import numpy  # sudo apt-get install python-numpy
 import random
 import pdb
+import timeit
 from unicodedata import *
 
 # Matrix
@@ -15,7 +16,7 @@ from unicodedata import *
 # 0: Walkable
 FINISH_POINT = 7
 STARTING_POINT = 8
-MUTATION_NUMBER = 4
+MUTATION_NUMBER = 15
 
 
 class Chromosome():
@@ -221,14 +222,14 @@ class Solution:
                 finishing_x = splitted_solution[index_in_splitted_solution][-1].x
                 finishing_y = splitted_solution[index_in_splitted_solution][-1].y
             else:
-                try:
-                    finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][0].x][splitted_solution[index_in_splitted_solution+1][0].y]
-                    finishing_x = splitted_solution[index_in_splitted_solution+1][0].x
-                    finishing_y = splitted_solution[index_in_splitted_solution+1][0].y
+#                try:
+                finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][0].x][splitted_solution[index_in_splitted_solution+1][0].y]
+                finishing_x = splitted_solution[index_in_splitted_solution+1][0].x
+                finishing_y = splitted_solution[index_in_splitted_solution+1][0].y
 
-                except Exception as error:
-                    print error
-                    pdb.set_trace()
+ #               except Exception as error:
+ #                   print error
+ #                   pdb.set_trace()
                 #si no es el ultimo, se toma como finishing point el primero del siguiente
 
             position = 0
@@ -258,7 +259,8 @@ class Solution:
             self.eliminate_loops()
             self.update_fitness()
         except Exception as error:
-            print error
+#            print error
+             pass
 
 
 # Contains all the information about the Maze  and how to solve it
@@ -363,11 +365,12 @@ class Maze():
 
 def main():
     # TODO: pasar parámetros al constructor
-    maze = Maze(500, 50)
+    maze = Maze(1000, 50)
     maze.load_map()
     maze.init_population()
     maze.calc_fitness()
     maze.select()
+    clock_start = timeit.default_timer()
     while not maze.has_finished():
         maze.mate()
         maze.mutate()
@@ -375,8 +378,11 @@ def main():
         maze.select()
         maze.iteration += 1
     winner = maze.get_winner()
+    clock_stop = timeit.default_timer()
     #print maze.matrix
     winner.print_solution()
+    print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
+
 
 
 if __name__ == '__main__':
