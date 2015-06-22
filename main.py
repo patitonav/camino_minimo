@@ -49,7 +49,7 @@ class Solution:
     X_DELTA_LIST = [1, 0, -1, 0]
     Y_DELTA_LIST = [0, 1, 0, -1]
     # Penalidad por pasar por un obstaculo, da mayor prefencia a soluciones sin obtáculos
-    OBSTACLE_PENALTY = 1000
+    OBSTACLE_PENALTY = 10
 
     def __init__(self, maze=None):
         self.chromosomes = []
@@ -342,14 +342,20 @@ class Maze():
         index = random.randint(TOP, len(self.population) - 1)
         self.population = self.population[:TOP] + self.population[index:TOP + index]
 
+# Cantidad de veces que se ejecuta la aplicación
+RUNS = 15
+
 
 def main():
-    RUNS = 15
     MAX_ITERATIONS = 500
     INITIAL_POPULATION = 250
     avg_iterations = 0
     min_iterations = MAX_ITERATIONS
     max_iterations = 0
+    avg_fitness = 0
+    min_fitness = 999999
+    max_fitness = 0
+
     initial_time = timeit.default_timer()
     for i in range(RUNS):
         print "Run %d started" % i
@@ -365,10 +371,10 @@ def main():
             maze.calc_fitness()
             maze.select()
             maze.iteration += 1
-        # winner = maze.get_winner()
+        winner = maze.get_winner()
         # clock_stop = timeit.default_timer()
         #print maze.matrix
-        # winner.print_solution()
+        winner.print_solution()
         # print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
         # print "Iteración: #%d" % maze.iteration
         avg_iterations += maze.iteration
@@ -376,12 +382,19 @@ def main():
             min_iterations = maze.iteration
         if max_iterations < maze.iteration:
             max_iterations = maze.iteration
+        avg_fitness += winner.fitness
+        if min_fitness > winner.fitness:
+            min_fitness = winner.fitness
+        if max_fitness < winner.fitness:
+            max_fitness = winner.fitness
         print "Run %d stopped" % i
     avg_iterations /= RUNS
+    avg_fitness/= RUNS
     total_time = timeit.default_timer() - initial_time
     print "Tiempo de ejecución\nTotal: %s\tPromedio: %s" % (total_time, total_time/RUNS)
     print "Cantidad de ejecuciones: %d" % RUNS
     print "Número de iteraciones\nPromerdio: %s\tMínimo: %s\tMáximo: %s" % (avg_iterations, min_iterations, max_iterations)
+    print "Aptitud\nPromerdio: %s\tMínimo: %s\tMáximo: %s" % (avg_fitness, min_fitness, max_fitness)
 
 if __name__ == '__main__':
     random.seed()
