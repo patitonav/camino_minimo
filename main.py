@@ -3,9 +3,7 @@
 
 import numpy  # sudo apt-get install python-numpy
 import random
-import pdb
 import timeit
-from unicodedata import *
 
 # Matrix
 # -------
@@ -16,7 +14,7 @@ from unicodedata import *
 # 0: Walkable
 FINISH_POINT = 7
 STARTING_POINT = 8
-MUTATION_NUMBER = 15
+MUTATION_NUMBER = 3
 
 
 class Chromosome():
@@ -90,8 +88,6 @@ class Solution:
                 position = 0
         self.fitness = fitness
 
-
-
     def print_directions(self,string_directions):
         string_directions=string_directions.replace("0", u"↓");
         string_directions=string_directions.replace("1", u"→");
@@ -142,17 +138,12 @@ class Solution:
     def mate(self, another_solution):
         found = False
         children = []
-        found = False
         for index in range(len(self.chromosomes)):
             try:
                 mate_index = another_solution.chromosomes.index(self.chromosomes[index])
             except ValueError:
                 pass
             else:
-                # print "PADRE"
-                # self.print_solution()
-                # print "OTRO PADRE"
-                # another_solution.print_solution()
                 found = True
                 break
         if found:
@@ -163,8 +154,6 @@ class Solution:
             a_new_solution.position_y = self.position_y
             a_new_solution.matrix = self.matrix
             a_new_solution.update_fitness()
-            # print "Un HIJO"
-            # a_new_solution.print_solution()
             children.append(a_new_solution)
             a_new_solution = Solution()
             a_new_solution.chromosomes = another_solution.chromosomes[:mate_index] + self.chromosomes[index:]
@@ -173,8 +162,6 @@ class Solution:
             a_new_solution.position_y = self.position_y
             a_new_solution.matrix = self.matrix
             a_new_solution.update_fitness()
-            # print "Otro HIJO"
-            # a_new_solution.print_solution()
             children.append(a_new_solution)
         return children
 
@@ -222,15 +209,9 @@ class Solution:
                 finishing_x = splitted_solution[index_in_splitted_solution][-1].x
                 finishing_y = splitted_solution[index_in_splitted_solution][-1].y
             else:
-#                try:
                 finishing_point = self.matrix[splitted_solution[index_in_splitted_solution+1][0].x][splitted_solution[index_in_splitted_solution+1][0].y]
                 finishing_x = splitted_solution[index_in_splitted_solution+1][0].x
                 finishing_y = splitted_solution[index_in_splitted_solution+1][0].y
-
- #               except Exception as error:
- #                   print error
- #                   pdb.set_trace()
-                #si no es el ultimo, se toma como finishing point el primero del siguiente
 
             position = 0
             fitness = 0
@@ -277,7 +258,7 @@ class Maze():
         self.initial_position_x = None
         self.initial_position_y = None
         # TODO: Lo pongo para hacer pruebas
-        self.best_posible = 9
+        self.best_posible = 10
 
     def set_stating_point(self):
 
@@ -314,7 +295,7 @@ class Maze():
         self.matrix[2][5] = 4
         self.matrix[5][5] = 3
         self.matrix[2][6] = 2
-        print self.matrix
+        # print self.matrix
         self.set_stating_point()
 
     # Creates the initial population
@@ -330,7 +311,6 @@ class Maze():
     def has_finished(self):
         if self.iteration >= self.max_iteration:
             self.finish = True
-        # TODO: Dar un valor a self.best_posible
         elif self.population[0].fitness <= self.best_posible:
             self.finish = True
         return self.finish
@@ -345,10 +325,10 @@ class Maze():
 
     # Mates the solutions according to the  parameters passed on the initialization
     def mate(self):
-        mating_subjects = self.population[:5]
+        mating_subjects = self.population[:10]
         for i in range(len(mating_subjects)):
             a_subject = self.population[i]
-            for j in range(5-i-1):
+            for j in range(len(mating_subjects)-i-1):
                 another_subject = self.population[i + j + 1]
                 children = a_subject.mate(another_subject)
                 self.population.extend(children)
@@ -364,26 +344,44 @@ class Maze():
 
 
 def main():
-    # TODO: pasar parámetros al constructor
-    maze = Maze(1000, 50)
-    maze.load_map()
-    maze.init_population()
-    maze.calc_fitness()
-    maze.select()
-    clock_start = timeit.default_timer()
-    while not maze.has_finished():
-        maze.mate()
-        maze.mutate()
+    RUNS = 15
+    MAX_ITERATIONS = 500
+    INITIAL_POPULATION = 250
+    avg_iterations = 0
+    min_iterations = MAX_ITERATIONS
+    max_iterations = 0
+    initial_time = timeit.default_timer()
+    for i in range(RUNS):
+        print "Run %d started" % i
+        # clock_start = timeit.default_timer()
+        maze = Maze(INITIAL_POPULATION, MAX_ITERATIONS)
+        maze.load_map()
+        maze.init_population()
         maze.calc_fitness()
         maze.select()
-        maze.iteration += 1
-    winner = maze.get_winner()
-    clock_stop = timeit.default_timer()
-    #print maze.matrix
-    winner.print_solution()
-    print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
-
-
+        while not maze.has_finished():
+            maze.mate()
+            maze.mutate()
+            maze.calc_fitness()
+            maze.select()
+            maze.iteration += 1
+        # winner = maze.get_winner()
+        # clock_stop = timeit.default_timer()
+        #print maze.matrix
+        # winner.print_solution()
+        # print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
+        # print "Iteración: #%d" % maze.iteration
+        avg_iterations += maze.iteration
+        if min_iterations > maze.iteration:
+            min_iterations = maze.iteration
+        if max_iterations < maze.iteration:
+            max_iterations = maze.iteration
+        print "Run %d stopped" % i
+    avg_iterations /= RUNS
+    total_time = timeit.default_timer() - initial_time
+    print "Tiempo de ejecución\nTotal: %s\tPromedio: %s" % (total_time, total_time/RUNS)
+    print "Cantidad de ejecuciones: %d" % RUNS
+    print "Número de iteraciones\nPromerdio: %s\tMínimo: %s\tMáximo: %s" % (avg_iterations, min_iterations, max_iterations)
 
 if __name__ == '__main__':
     random.seed()
