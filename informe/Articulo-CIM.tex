@@ -1,0 +1,113 @@
+%--------------------------------------------------------------
+%     Ejemplo de un artículo con LaTeX
+%--------------------------------------------------------------
+\documentclass[a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsmath}
+%--------------------------------------------------------------
+\title{Resolución de camino mínimo con algoritmos genéticos}
+\author{Patricio Navarro
+\and Francisco Cabrera 
+\and Alex Ingberg }
+\date{18/06/2015}
+%--------------------------------------------------------------
+\begin{document}
+\maketitle
+\begin{abstract}
+Se vera como es posible resolver el problema de caminos
+mínimos utilizando algoritmos genéticos, donde los cromosomas son los pasos
+de la solución. Mostramos resultados experimentales que ponen de manifiesto 
+el ámbito de aplicación del método, y proponemos también algunas ideas para
+generalizarlo de modo que sea efectivo para una familia más amplia de problemas.
+Para ellos se usara el caso particular de un robot que debe recorrer un camino en
+un depósito para transportar una carga.\\ 
+Palabras Clave: Algoritmo, Evolutivo, Genético, Laberinto, camino mínimo
+\end{abstract}
+\tableofcontents
+%--------------------------------------------------------------
+\section{Introduccion}
+Una gran cantidad de problemas importantes de
+optimización no pueden ser resueltos usando métodos
+exactos, es decir, no es posible encontrar su solución
+óptima con esfuerzos computacionales aceptables aunque
+se pueda contar con computadores de alta velocidad
+operando en paralelo. Un gran problema de la
+optimización es el fenómeno llamado explosión
+combinatorial, que significa, que cuando crece el número
+de variables de decisión del problema, el número de
+decisiones factibles y el esfuerzo computacional crecen
+en forma exponencial \cite{1}. \\
+ Hace algunos años todavía se hablaba de la
+dificultad para atacar problemas de tipo NP. Es
+decir, problemas cuya solución requería de una
+gran cantidad de pruebas y combinaciones, sin
+poder obtenerla con una solución analítica
+directa. Ejemplo de esto es el problema del
+agente viajero \cite{2,3}, cuya solución era intratable
+en términos de la computación tradicional.\\
+Sin embargo, no todos los
+problemas combinatoriales son tan complejos de
+resolver; existen algunos para los cuales hay algoritmos
+que resuelven esos problemas con un esfuerzo
+computacional que crece de manera polinomial con el
+tamaño del problema, \cite{4,5}. 
+
+\section{Descripcion del problema}
+El problema consiste en un robot que debe transladar una carga desde un punto inicial
+hasta un punto final dentro de un depósito, donde existen obstaculos de distinto tipo.
+El objetivo es encontrar el mejor camino posible entre la posicion de inicio y fin, en un tiempo
+de calculo razonable, sin atravezar ningun obstaculo.\\
+\subsection{Modelizacion}
+Para modelizar las coordenadas sobre el plano, se usara una matriz, donde se discretizaran
+las dimenciones en bloques donde cada uno de estos representará
+una unidad de medida y una posicion en la matriz. El robot solo podra moverse en 4 direcciones (arriva, abajo, derecha izquierda) y no puede volver  sobre sus pasos (no puede realizar un movimiento hacia la 
+derecha seguido inmediatamente de uno a la izquierda).\\
+\subsubsection{Representacion del depósito en la matriz}
+Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en la matriz.\\
+0:     Representa un espacio transitable.\\
+(1-6): Representa los distintos obstaculos.\\
+7:     Es el punto donde inicia el robot.\\
+8:     Es el punto donde debe terminar el robot.\\
+9:     Representa los límites del depósito.\\
+\subsection{Consideraciones}
+Para este problema no se consideran obstaculos fuera del plano compuesto por la
+superficie del galpón. Tambien se despreciará cualquier influciencia de la carga
+en el desplazamiento del robot.\\
+\section{Solución}
+Se buscara resolver este problema con la utilización de algoritmos genéticos,
+debido a la velocidad con que puede converger a una buena solución en problemas de este tipo.
+
+\section{Resultados}
+\section{Concluciones}
+
+\renewcommand\refname{Bibliografía}
+\begin{thebibliography}{breitestes Label}
+\bibitem{1} \textsc{Hincapié, R. A.}, \textsc{Porras, C. A. R.} & \textsc{Gallego, R. A.}
+\textit{(2004)Técnicas heurísticas aplicadas al problema del cartero viajante (TSP)}, Scientia et Technica, 1(24).
+\bibitem{2} \textsc{Baskaran, G.}, \textsc{Fu, Y.} & \textsc{Anderson, P. W.}
+\textit{The Statistical Mechanics of the Traveling
+Salesman Problem}, Journal of Statistical
+Physics, núm. 45, pp. 1-25, 1986.
+\bibitem{3} \textsc{Kirkpatrick, S.} & \textsc{ Toulouse, G.}
+\textit{Configuration Space Analysis Of Traveling Salesman
+Problems}, Journal de Physique, núm. 46,
+pp. 1277-1292, 1985.
+\bibitem{4} \textsc{Gallego R.},\textsc{Ramón; Romero L.} y \textsc{Escobar Z.,
+Antonio.}
+\textit{Algoritmos Genéticos}, texto guía en
+Maestría en Ingeniería Eléctrica U.T.P.
+\bibitem{5} \textsc{Gallego R.},\textsc{ Ramón y Romero L.} , \textsc{Rubén}
+\textit{Optimización Combinatorial}, texto guía en Maestría en
+Ingeniería Eléctrica U.T.P.
+\end{thebibliography}
+
+
+
+
+\appendix
+
+
+\end{document}
