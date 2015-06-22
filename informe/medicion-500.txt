@@ -1,0 +1,8 @@
+Población inicial: 500
+Tiempo de ejecución
+Total: 282.430397034	Promedio: 7.06075992584
+Cantidad de ejecuciones: 40
+Número de iteraciones
+Promerdio: 13	Mínimo: 0	Máximo: 79
+Aptitud
+Promerdio: 10.0	Mínimo: 10.0	Máximo: 10.0

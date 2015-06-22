@@ -101,7 +101,7 @@ class Solution:
         # TODO: imprimir matriz resuelta
         print "Fitness: %d" % self.fitness
         print "Camino mínimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
-        print "Direcciones: " + self.print_directions(", ".join([str(chrom.step) for chrom in self.chromosomes]))
+        # print "Direcciones: " + self.print_directions(", ".join([str(chrom.step) for chrom in self.chromosomes]))
 
     def update_fitness(self, value=None):
         if value:
@@ -343,22 +343,22 @@ class Maze():
         self.population = self.population[:TOP] + self.population[index:TOP + index]
 
 # Cantidad de veces que se ejecuta la aplicación
-RUNS = 30
+RUNS = 40
 
 
 def main():
     MAX_ITERATIONS = 500
-    INITIAL_POPULATION = 500
+    INITIAL_POPULATION = 2000
     avg_iterations = 0
     min_iterations = MAX_ITERATIONS
     max_iterations = 0
     avg_fitness = 0
     min_fitness = 999999
     max_fitness = 0
-
+    print "Población inicial: %d" % INITIAL_POPULATION
     initial_time = timeit.default_timer()
     for i in range(RUNS):
-        print "Run %d started" % i
+        # print "Run %d started" % i
         # clock_start = timeit.default_timer()
         maze = Maze(INITIAL_POPULATION, MAX_ITERATIONS)
         maze.load_map()
@@ -374,7 +374,7 @@ def main():
         winner = maze.get_winner()
         # clock_stop = timeit.default_timer()
         #print maze.matrix
-        winner.print_solution()
+        # winner.print_solution()
         # print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
         # print "Iteración: #%d" % maze.iteration
         avg_iterations += maze.iteration
@@ -387,9 +387,9 @@ def main():
             min_fitness = winner.fitness
         if max_fitness < winner.fitness:
             max_fitness = winner.fitness
-        print "Run %d stopped" % i
+        # print "Run %d stopped" % i
     avg_iterations /= RUNS
-    avg_fitness/= RUNS
+    avg_fitness /= RUNS
     total_time = timeit.default_timer() - initial_time
     print "Tiempo de ejecución\nTotal: %s\tPromedio: %s" % (total_time, total_time/RUNS)
     print "Cantidad de ejecuciones: %d" % RUNS
