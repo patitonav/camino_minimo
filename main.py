@@ -343,12 +343,12 @@ class Maze():
         self.population = self.population[:TOP] + self.population[index:TOP + index]
 
 # Cantidad de veces que se ejecuta la aplicación
-RUNS = 40
+RUNS = 100
 
 
 def main():
-    MAX_ITERATIONS = 500
-    INITIAL_POPULATION = 2000
+    MAX_ITERATIONS = 1000
+    INITIAL_POPULATION = 100
     avg_iterations = 0
     min_iterations = MAX_ITERATIONS
     max_iterations = 0
