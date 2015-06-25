@@ -63,7 +63,7 @@ de calculo razonable, sin atravezar ningun obstaculo.\\
 \subsection{Modelizacion}
 Para modelizar las coordenadas sobre el plano, se usara una matriz, donde se discretizaran
 las dimenciones en bloques donde cada uno de estos representará
-una unidad de medida y una posicion en la matriz. El robot solo podra moverse en 4 direcciones (arriva, abajo, derecha izquierda) y no puede volver  sobre sus pasos (no puede realizar un movimiento hacia la 
+una unidad de medida y una posicion en la matriz. El robot solo podra moverse en 4 direcciones (arriba, abajo, derecha e izquierda) y no puede volver  sobre sus pasos (no puede realizar un movimiento hacia la 
 derecha seguido inmediatamente de uno a la izquierda).\\
 \subsubsection{Representacion del depósito en la matriz}
 Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en la matriz.\\
@@ -79,9 +79,24 @@ en el desplazamiento del robot.\\
 \section{Solución}
 Se buscara resolver este problema con la utilización de algoritmos genéticos,
 debido a la velocidad con que puede converger a una buena solución en problemas de este tipo.
+Buscamos la solución ideal en llegar del 7 (el inicio) al 8 (el final). El sistema en el cual se probó el programa tiene la siguiente forma:
+
+\makebox[\textwidth]{[[ 9.  9.  9.  9.  9.  9.  9.  9.]\\
+ [ 9.  0.  0.  0.  0.  0.  8.  9.]\\
+ [ 9.  0.  1.  0.  5.  4.  2.  9.]\\
+ [ 9.  0.  3.  0.  0.  0.  0.  9.]\\
+ [ 9.  0.  0.  6.  0.  0.  0.  9.]\\
+ [ 9.  0.  0.  0.  0.  3.  0.  9.]\\
+ [ 9.  0.  0.  7.  0.  0.  0.  9.]\\
+ [ 9.  9.  9.  9.  9.  9.  9.  9.]]} \par
+Se configuran distintos valores de cantidad de soluciones para la población inicial. Cada solución está compuesta por cromosomas, quienes contienen una posición en la matriz-laberinto. También se configurar las distintas cantidad de iteraciones hasta que la ejecución se termina. 
+Se ejecuta la cruza de los distintos individuos en la población para obtener mejores y futuras generaciones y luego se aplica el proceso de mutación. En cada solución, se evalua la porción menos apta (con el menor valor de fitness) y se genera una porción nueva y aleatoria. Se vuelve a calcular el fitness nuevamente y, si es necesario, el proceso comienza nuevamente.
+
 
 \section{Resultados}
-\section{Concluciones}
+El camino optimo obtenido tiene un valor de fitness de 10. Además, el tiempo promedio y la cantdida de iteraciones promedio necesarias varia segun la poblacion inicial.
+
+\section{Conclusiones}
 
 \renewcommand\refname{Bibliografía}
 \begin{thebibliography}{breitestes Label}

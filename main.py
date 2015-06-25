@@ -374,7 +374,7 @@ def main():
         winner = maze.get_winner()
         # clock_stop = timeit.default_timer()
         #print maze.matrix
-        # winner.print_solution()
+        #winner.print_solution()
         # print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
         # print "Iteración: #%d" % maze.iteration
         avg_iterations += maze.iteration
