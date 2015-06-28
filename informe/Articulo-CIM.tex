@@ -7,6 +7,7 @@
 \usepackage{amssymb}
 \usepackage{amsthm}
 \usepackage{amsmath}
+\usepackage{indentfirst}
 %--------------------------------------------------------------
 \title{Resolución de camino mínimo con algoritmos genéticos}
 \author{Patricio Navarro
@@ -23,11 +24,13 @@ de la solución. Mostramos resultados experimentales que ponen de manifiesto
 el ámbito de aplicación del método, y proponemos también algunas ideas para
 generalizarlo de modo que sea efectivo para una familia más amplia de problemas.
 Para ellos se usara el caso particular de un robot que debe recorrer un camino en
-un depósito para transportar una carga.\\ 
+un depósito para transportar una carga.
+
 Palabras Clave: Algoritmo, Evolutivo, Genético, Laberinto, Camino Mínimo
 \end{abstract}
 \tableofcontents
 %--------------------------------------------------------------
+
 \section{Introduccion}
 Una gran cantidad de problemas importantes de
 optimización no pueden ser resueltos usando métodos
@@ -39,7 +42,7 @@ optimización es el fenómeno llamado explosión
 combinatorial, que significa, que cuando crece el número
 de variables de decisión del problema, el número de
 decisiones factibles y el esfuerzo computacional crecen
-en forma exponencial \cite{1}. \\
+en forma exponencial \cite{1}.\par
  Hace algunos años todavía se hablaba de la
 dificultad para atacar problemas de tipo NP. Es
 decir, problemas cuya solución requería de una
@@ -47,24 +50,26 @@ gran cantidad de pruebas y combinaciones, sin
 poder obtenerla con una solución analítica
 directa. Ejemplo de esto es el problema del
 agente viajero \cite{2,3}, cuya solución era intratable
-en términos de la computación tradicional.\\
+en términos de la computación tradicional.\par
 Sin embargo, no todos los
 problemas combinatoriales son tan complejos de
 resolver; existen algunos para los cuales hay algoritmos
 que resuelven esos problemas con un esfuerzo
 computacional que crece de manera polinomial con el
-tamaño del problema\cite{4,5}. 
+tamaño del problema\cite{4,5}.\par
 
 \section{Descripcion del problema}
 El problema consiste en un robot que debe transladar una carga desde un punto inicial
 hasta un punto final dentro de un depósito, donde existen obstaculos de distinto tipo.
 El objetivo es encontrar el mejor camino posible entre la posicion de inicio y fin, en un tiempo
-de calculo razonable, sin atravezar ningun obstaculo.\\
+de calculo razonable, sin atravezar ningun obstaculo.\par
+
 \subsection{Modelizacion}
 Para modelizar las coordenadas sobre el plano, se usara una matriz, donde se discretizaran
 las dimenciones en bloques donde cada uno de estos representará
 una unidad de medida y una posicion en la matriz. El robot solo podra moverse en 4 direcciones (arriba, abajo, derecha e izquierda) y no puede volver  sobre sus pasos (no puede realizar un movimiento hacia la 
-derecha seguido inmediatamente de uno a la izquierda).\\
+derecha seguido inmediatamente de uno a la izquierda).\par
+
 \subsubsection{Representacion del depósito en la matriz}
 Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en la matriz.\\
 0:     Representa un espacio transitable.\\
@@ -72,14 +77,16 @@ Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en 
 7:     Es el punto donde inicia el robot.\\
 8:     Es el punto donde debe terminar el robot.\\
 9:     Representa los límites del depósito.\\
+
 \subsection{Consideraciones}
 Para este problema no se consideran obstaculos fuera del plano compuesto por la
 superficie del galpón. Tambien se despreciará cualquier influciencia de la carga
-en el desplazamiento del robot.\\
+en el desplazamiento del robot.\par
+
 \section{Solución}
-Se buscara resolver este problema con la utilización de algoritmos genéticos,
+Se buscará resolver este problema con la utilización de algoritmos genéticos,
 debido a la velocidad con que puede converger a una buena solución en problemas de este tipo.
-Buscamos la solución ideal en llegar del 7 (el inicio) al 8 (el final). El sistema en el cual se probó el programa tiene la siguiente forma:
+Buscamos la solución ideal en llegar desde el inicio hasta el final. El sistema en el cual se probó el programa tiene la siguiente forma:
 
 \makebox[\textwidth]{[[ 9.  9.  9.  9.  9.  9.  9.  9.]\\
  [ 9.  0.  0.  0.  0.  0.  8.  9.]\\
@@ -94,7 +101,7 @@ Se ejecuta la cruza de los distintos individuos en la población para obtener mej
 
 
 \section{Resultados}
-El camino optimo obtenido tiene un valor de fitness de 10. Además, el tiempo promedio y la cantidad de iteraciones promedio necesarias varia segun la poblacion inicial.
+El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo promedio y la cantidad de iteraciones promedio necesarias varia según la poblacion inicial.
 \includegraphics[width=3in]{1.png}
 \includegraphics[width=3in]{2.png}
 En los gráficos se puede apreciar que la cantidad promedio y necesaria de iteraciones baja según la población inicial. No obstante, la cantidad de tiempo no es monótona y ofrece su óptimo alrededor de una población de 1000 individuos.
