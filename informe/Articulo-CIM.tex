@@ -8,6 +8,7 @@
 \usepackage{amsthm}
 \usepackage{amsmath}
 \usepackage{indentfirst}
+\usepackage{graphicx}
 %--------------------------------------------------------------
 \title{Resolución de camino mínimo con algoritmos genéticos}
 \author{Patricio Navarro
@@ -30,7 +31,6 @@ Palabras Clave: Algoritmo, Evolutivo, Genético, Laberinto, Camino Mínimo
 \end{abstract}
 \tableofcontents
 %--------------------------------------------------------------
-
 \section{Introduccion}
 Una gran cantidad de problemas importantes de
 optimización no pueden ser resueltos usando métodos
@@ -71,12 +71,12 @@ una unidad de medida y una posicion en la matriz. El robot solo podra moverse en
 derecha seguido inmediatamente de uno a la izquierda).\par
 
 \subsubsection{Representacion del depósito en la matriz}
-Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en la matriz.\\
-0:     Representa un espacio transitable.\\
-(1-6): Representa los distintos obstaculos.\\
-7:     Es el punto donde inicia el robot.\\
-8:     Es el punto donde debe terminar el robot.\\
-9:     Representa los límites del depósito.\\
+Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en la matriz.\par
+0:     Representa un espacio transitable.\par
+(1-6): Representa los distintos obstaculos.\par
+7:     Es el punto donde inicia el robot.\par
+8:     Es el punto donde debe terminar el robot.\par
+9:     Representa los límites del depósito.\par
 
 \subsection{Consideraciones}
 Para este problema no se consideran obstaculos fuera del plano compuesto por la
@@ -100,25 +100,40 @@ Se configuran distintos valores de cantidad de soluciones para la población inic
 Se ejecuta la cruza de los distintos individuos en la población para obtener mejores y futuras generaciones y luego se aplica el proceso de mutación. En cada solución, se evalua la porción menos apta (con el menor valor de fitness) y se genera una porción nueva y aleatoria. Se vuelve a calcular el fitness nuevamente y, si es necesario, el proceso comienza nuevamente.
 
 
+Determinado el camino mínimo, para cada uno de los siguientes tamaños de poblaciones iniciales: 250, 500, 1000 y 2000;
+ realizamos 100 ejecuciones del programa registrando: tiempos de ejecución total y promedio; cantidad de iteraciones y aptitud promedio, mínima y máxima. La condición de corte para estas ejecuciónes era llegar a una solución óptima con una aptitud de 10 o a un tope de 1000 generaciones de soluciones.
 \section{Resultados}
 El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo promedio y la cantidad de iteraciones promedio necesarias varia según la poblacion inicial.
-\includegraphics[width=3in]{1.png}
-\includegraphics[width=3in]{2.png}
+
+\begin{figure}[!hbp]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{1.png}
+	\end{center}
+	\caption{Tiempo promedio de procesamiento en 100 ejecuciónes del programa para distintos tamaños de población inicial.} \label{fig001}
+\end{figure}
+
+\begin{figure}[!hbp]
+	\begin{center}
+		\includegraphics[width=0.8\textwidth]{2.png}
+	\end{center}
+	\caption{Cantidad promedio de iteraciones en 100 ejecuciónes para encontrar una solución óptima.} \label{fig002}
+\end{figure}
+
 En los gráficos se puede apreciar que la cantidad promedio y necesaria de iteraciones baja según la población inicial. No obstante, la cantidad de tiempo no es monótona y ofrece su óptimo alrededor de una población de 1000 individuos.
 
 
 
-\section{Conclusiones}
-
+\section{Concluciones}
+\newpage
 \renewcommand\refname{Bibliografía}
 \begin{thebibliography}{breitestes Label}
-\bibitem{1} \textsc{Hincapié, R. A.}, \textsc{Porras, C. A. R.} & \textsc{Gallego, R. A.}
+\bibitem{1} \textsc{Hincapié, R. A.}, \textsc{Porras, C. A. R.} \& \textsc{Gallego, R. A.}
 \textit{(2004)Técnicas heurísticas aplicadas al problema del cartero viajante (TSP)}, Scientia et Technica, 1(24).
-\bibitem{2} \textsc{Baskaran, G.}, \textsc{Fu, Y.} & \textsc{Anderson, P. W.}
+\bibitem{2} \textsc{Baskaran, G.}, \textsc{Fu, Y.} \& \textsc{Anderson, P. W.}
 \textit{The Statistical Mechanics of the Traveling
 Salesman Problem}, Journal of Statistical
 Physics, núm. 45, pp. 1-25, 1986.
-\bibitem{3} \textsc{Kirkpatrick, S.} & \textsc{ Toulouse, G.}
+\bibitem{3} \textsc{Kirkpatrick, S.} \& \textsc{ Toulouse, G.}
 \textit{Configuration Space Analysis Of Traveling Salesman
 Problems}, Journal de Physique, núm. 46,
 pp. 1277-1292, 1985.
@@ -131,10 +146,6 @@ Maestría en Ingeniería Eléctrica U.T.P.
 Ingeniería Eléctrica U.T.P.
 \end{thebibliography}
 
-
-
-
 \appendix
-
 
 \end{document}

@@ -48,7 +48,7 @@ class Solution:
 
     X_DELTA_LIST = [1, 0, -1, 0]
     Y_DELTA_LIST = [0, 1, 0, -1]
-    # Penalidad por pasar por un obstaculo, da mayor prefencia a soluciones sin obtáculos
+    # Penalidad por pasar por un obstaculo, da mayor prefencia a soluciones sin obtaculos
     OBSTACLE_PENALTY = 10
 
     def __init__(self, maze=None):
@@ -98,10 +98,9 @@ class Solution:
 
     # Print the solution in screen
     def print_solution(self):
-        # TODO: imprimir matriz resuelta
         print "Fitness: %d" % self.fitness
-        print "Camino mínimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
-        # print "Direcciones: " + self.print_directions(", ".join([str(chrom.step) for chrom in self.chromosomes]))
+        print "Camino minimo: " + ", ".join([str(chrom.position) for chrom in self.chromosomes])
+        print "Direcciones: " + self.print_directions(", ".join([str(chrom.step) for chrom in self.chromosomes]))
 
     def update_fitness(self, value=None):
         if value:
@@ -202,9 +201,9 @@ class Solution:
                 # Su posicion es la ultima visitada
                 last_position_x = first_chromosome.x
                 last_position_y = first_chromosome.y
-            #splitted_solution[index_in_splitted_solution-1][-1] indica el ultimo cromosoma del ultimo cacho antes del que hay que mudar
 
-            if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el último
+
+            if splitted_solution[index_in_splitted_solution]==splitted_solution[-1]: #si el bloque a mutar es el ultimo
                 finishing_point = FINISH_POINT
                 finishing_x = splitted_solution[index_in_splitted_solution][-1].x
                 finishing_y = splitted_solution[index_in_splitted_solution][-1].y
@@ -240,7 +239,6 @@ class Solution:
             self.eliminate_loops()
             self.update_fitness()
         except Exception as error:
-#            print error
              pass
 
 
@@ -257,7 +255,6 @@ class Maze():
         self.max_iteration = iterations
         self.initial_position_x = None
         self.initial_position_y = None
-        # TODO: Lo pongo para hacer pruebas
         self.best_posible = 10
 
     def set_stating_point(self):
@@ -342,7 +339,7 @@ class Maze():
         index = random.randint(TOP, len(self.population) - 1)
         self.population = self.population[:TOP] + self.population[index:TOP + index]
 
-# Cantidad de veces que se ejecuta la aplicación
+# Cantidad de veces que se ejecuta la aplicacion
 RUNS = 100
 
 
@@ -355,7 +352,7 @@ def main():
     avg_fitness = 0
     min_fitness = 999999
     max_fitness = 0
-    print "Población inicial: %d" % INITIAL_POPULATION
+    print "Poblacion inicial: %d" % INITIAL_POPULATION
     initial_time = timeit.default_timer()
     for i in range(RUNS):
         # print "Run %d started" % i
@@ -374,9 +371,9 @@ def main():
         winner = maze.get_winner()
         # clock_stop = timeit.default_timer()
         #print maze.matrix
-        #winner.print_solution()
-        # print "Tiempo tomado por alg. genético: " + str(clock_stop - clock_start) + " segundos"
-        # print "Iteración: #%d" % maze.iteration
+        # winner.print_solution()
+        # print "Tiempo tomado por alg. genetico: " + str(clock_stop - clock_start) + " segundos"
+        # print "Iteracion: #%d" % maze.iteration
         avg_iterations += maze.iteration
         if min_iterations > maze.iteration:
             min_iterations = maze.iteration
@@ -391,10 +388,10 @@ def main():
     avg_iterations /= RUNS
     avg_fitness /= RUNS
     total_time = timeit.default_timer() - initial_time
-    print "Tiempo de ejecución\nTotal: %s\tPromedio: %s" % (total_time, total_time/RUNS)
+    print "Tiempo de ejecucion\nTotal: %s\tPromedio: %s" % (total_time, total_time/RUNS)
     print "Cantidad de ejecuciones: %d" % RUNS
-    print "Número de iteraciones\nPromerdio: %s\tMínimo: %s\tMáximo: %s" % (avg_iterations, min_iterations, max_iterations)
-    print "Aptitud\nPromerdio: %s\tMínimo: %s\tMáximo: %s" % (avg_fitness, min_fitness, max_fitness)
+    print "Numero de iteraciones\nPromerdio: %s\tMinimo: %s\tMaximo: %s" % (avg_iterations, min_iterations, max_iterations)
+    print "Aptitud\nPromerdio: %s\tMinimo: %s\tMaximo: %s" % (avg_fitness, min_fitness, max_fitness)
 
 if __name__ == '__main__':
     random.seed()
