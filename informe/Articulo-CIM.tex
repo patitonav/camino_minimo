@@ -7,6 +7,7 @@
 \usepackage{indentfirst}
 \usepackage{graphicx}
 \usepackage[nottoc,notlot,notlof]{tocbibind}
+
 %--------------------------------------------------------------
 \title{Resolución de camino mínimo con algoritmos genéticos}
 \author{Patricio Navarro \and Francisco Cabrera \and Alex Ingberg }
@@ -56,27 +57,27 @@ tamaño del problema\cite{4,5}.\par
 
 \section{Descripcion del problema}
 El problema consiste en un robot que debe transladar una carga desde un punto inicial
-hasta un punto final dentro de un depósito, donde existen obstaculos de distinto tipo.
-El objetivo es encontrar el mejor camino posible entre la posicion de inicio y fin, en un tiempo
-de calculo razonable, sin atravezar ningun obstaculo.\par
+hasta un punto final dentro de un depósito, donde existen obstáculos de distinto tipo.
+El objetivo es encontrar el mejor camino posible entre la posición de inicio y fin, en un tiempo
+de calculo razonable, sin atravezar ningún obstáculo.\par
 
 \subsection{Modelizacion}
-Para modelizar las coordenadas sobre el plano, se usara una matriz, donde se discretizaran
+Para modelizar las coordenadas sobre el plano, se usara una matriz, donde se discretizarán
 las dimenciones en bloques donde cada uno de estos representará
-una unidad de medida y una posicion en la matriz. El robot solo podra moverse en 4 direcciones (arriba, abajo, derecha e izquierda) y no puede volver  sobre sus pasos (no puede realizar un movimiento hacia la 
+una unidad de medida y una posición en la matriz. El robot solo podra moverse en 4 direcciones (arriba, abajo, derecha e izquierda) y no puede volver  sobre sus pasos (no puede realizar un movimiento hacia la 
 derecha seguido inmediatamente de uno a la izquierda).\par
 
 \subsubsection{Representacion del depósito en la matriz}
 Se utilizaran numeros enteros en el rango [0,9] para representar el depósito en la matriz.\par
 0:     Representa un espacio transitable.\par
-(1-6): Representa los distintos obstaculos.\par
+(1-6): Representa los distintos obstáculos.\par
 7:     Es el punto donde inicia el robot.\par
 8:     Es el punto donde debe terminar el robot.\par
 9:     Representa los límites del depósito.\par
 
 \subsection{Consideraciones}
-Para este problema no se consideran obstaculos fuera del plano compuesto por la
-superficie del galpón. Tambien se despreciará cualquier influciencia de la carga
+Para este problema no se consideran obstáculos fuera del plano compuesto por la
+superficie del galpón. También se despreciará cualquier influciencia de la carga
 en el desplazamiento del robot.\par
 
 \section{Solución}
@@ -97,11 +98,11 @@ El sistema en el cual se probó el programa tiene la siguiente forma:\\
 Se configuran distintos valores de cantidad de soluciones para la población inicial. Cada solución está compuesta por cromosomas, quienes contienen una posición en la matriz-laberinto. También se configurar las distintas cantidad de iteraciones hasta que la ejecución se termina. 
 Se ejecuta una cruza de los distintos individuos en la población para obtener mejores y futuras generaciones y luego se aplica un proceso de mutación. En cada solución, se evalua la porción menos apta (con el menor valor de fitness) y se genera una porción nueva y aleatoria. Se vuelve a calcular el fitness nuevamente y, si es necesario, el proceso comienza nuevamente.
 
-Determinado el camino mínimo, para cada uno de los siguientes tamaños de poblaciones iniciales: 250, 500, 1000 y 2000;
+Habiendo determinado el camino mínimo, para cada uno de los siguientes tamaños de poblaciones iniciales: 250, 500, 1000 y 2000;
  realizamos 100 ejecuciones del programa registrando: tiempos de ejecución total y promedio; cantidad de iteraciones y aptitud promedio, mínima y máxima. La condición de corte para estas ejecuciónes fue llegar a una solución óptima con una aptitud de 10 o a un tope de 1000 generaciones de soluciones.\par
 
 \section{Resultados}
-El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo promedio y la cantidad de iteraciones promedio necesarias varia según la poblacion inicial.\par
+El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo promedio y la cantidad de iteraciones promedio necesarias varía según la población inicial.\par
 
 \begin{figure}[!hbp]
 	\begin{center}
@@ -119,6 +120,8 @@ El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo pro
 
 En los gráficos se puede apreciar que la cantidad promedio y necesaria de iteraciones baja según la población inicial. No obstante, la cantidad de tiempo no es monótona y ofrece su óptimo alrededor de una población de 1000 individuos.
 
+El programa llegó solución óptima en todas sus ejecuciones únicamente con una población inicial de 2000.
+Para los otros valores se registran casos en los que no se logró llegar a una solución óptima en menos de 1000 generaciones.
 
 
 \section{Conclusiones}
