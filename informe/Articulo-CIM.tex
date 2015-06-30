@@ -85,18 +85,8 @@ Se buscará resolver este problema con la utilización de algoritmos genéticos,
 debido a la velocidad con que puede converger a una buena solución en problemas de este tipo.
 Buscamos la solución ideal en llegar desde el inicio hasta el final.\par
 
-El sistema en el cual se probó el programa tiene la siguiente forma:\\
-\makebox[\textwidth]{[[ 9.  9.  9.  9.  9.  9.  9.  9.]\\
- [ 9.  0.  0.  0.  0.  0.  8.  9.]\\
- [ 9.  0.  1.  0.  5.  4.  2.  9.]\\
- [ 9.  0.  3.  0.  0.  0.  0.  9.]\\
- [ 9.  0.  0.  6.  0.  0.  0.  9.]\\
- [ 9.  0.  0.  0.  0.  3.  0.  9.]\\
- [ 9.  0.  0.  7.  0.  0.  0.  9.]\\
- [ 9.  9.  9.  9.  9.  9.  9.  9.]]} \par
-
 Se configuran distintos valores de cantidad de soluciones para la población inicial. Cada solución está compuesta por cromosomas, quienes contienen una posición en la matriz-laberinto. También se configurar las distintas cantidad de iteraciones hasta que la ejecución se termina. 
-Se ejecuta una cruza de los distintos individuos en la población para obtener mejores y futuras generaciones y luego se aplica un proceso de mutación. En cada solución, se evalua la porción menos apta (con el menor valor de fitness) y se genera una porción nueva y aleatoria. Se vuelve a calcular el fitness nuevamente y, si es necesario, el proceso comienza nuevamente.
+Se ejecuta una cruza de los distintos individuos en la población para obtener mejores y futuras generaciones y luego se aplica un proceso de mutación. En cada solución, se evalua la porción menos apta (con el menor valor de fitness) y se genera una porción nueva y aleatoria. Se vuelve a calcular el fitness nuevamente y, si es necesario, el proceso comienza nuevamente.\par
 
 Habiendo determinado el camino mínimo, para cada uno de los siguientes tamaños de poblaciones iniciales: 250, 500, 1000 y 2000;
  realizamos 100 ejecuciones del programa registrando: tiempos de ejecución total y promedio; cantidad de iteraciones y aptitud promedio, mínima y máxima. La condición de corte para estas ejecuciónes fue llegar a una solución óptima con una aptitud de 10 o a un tope de 1000 generaciones de soluciones.\par
@@ -111,6 +101,7 @@ El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo pro
 	\caption{Datos obtenidos en 100 ejecuciónes del programa para distintos tamaños de población inicial.} \label{fig001}
 \end{figure}
 
+De la Figura 1 se deduce, a partir de sus valores registrados de aptitud e iteraciones máximas, que para un valor de 2000 soluciones iniciales se llegó a la óptima (de una aptitud igual a 10) en todas las 100 corridas del programa. Mientras que para el resto de los valores medidos si bien llegaron en algunos casos a la mejor solución en otros no lo hizo, llegando en los peores casos a 28. Esto se debe a que se limitó la cantidad de generaciones a 1000 para evitar largos tiempos de procesamiento.
 \begin{figure}[!hbp]
 	\begin{center}
 		\includegraphics[width=0.975\textwidth]{tabla2.PNG}
@@ -120,33 +111,33 @@ El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo pro
 
 \begin{figure}[!hbp]
 	\begin{center}
+		\includegraphics[width=0.8\textwidth]{graf-aptitud.PNG}
+	\end{center}
+	\caption{Valores de aptitud en 100 ejecuciónes para encontrar una solución óptima.} \label{fig003}
+\end{figure}
+
+\begin{figure}[!hbp]
+	\begin{center}
 		\includegraphics[width=0.8\textwidth]{graf-tiempo.PNG}
 	\end{center}
-	\caption{Tiempo promedio de procesamiento en 100 ejecuciónes del programa para distintos tamaños de población inicial.} \label{fig003}
+	\caption{Tiempo promedio de procesamiento en 100 ejecuciónes del programa para distintos tamaños de población inicial.} \label{fig004}
 \end{figure}
 
 \begin{figure}[!hbp]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{graf-iteraciones-relativas.PNG}
 	\end{center}
-	\caption{Valores normalizados de iteraciones en 100 ejecuciónes para encontrar una solución óptima.} \label{fig004}
+	\caption{Valores normalizados de iteraciones en 100 ejecuciónes para encontrar una solución óptima.} \label{fig005}
 \end{figure}
 
-\begin{figure}[!hbp]
-	\begin{center}
-		\includegraphics[width=0.8\textwidth]{graf-aptitud.PNG}
-	\end{center}
-	\caption{Valores de aptitud en 100 ejecuciónes para encontrar una solución óptima.} \label{fig005}
-\end{figure}
+En los gráficos se puede apreciar que la cantidad promedio y necesaria de iteraciones baja según la población inicial. No obstante, la cantidad de tiempo no es monótona y ofrece su óptimo alrededor de una población de 1000 individuos.\par
 
-En los gráficos se puede apreciar que la cantidad promedio y necesaria de iteraciones baja según la población inicial. No obstante, la cantidad de tiempo no es monótona y ofrece su óptimo alrededor de una población de 1000 individuos.
-
-El programa llegó solución óptima en todas sus ejecuciones únicamente con una población inicial de 2000.
-Para los otros valores se registran casos en los que no se logró llegar a una solución óptima en menos de 1000 generaciones.
 
 
 \section{Conclusiones}
+
 \newpage
+
 \renewcommand\refname{Bibliografía}
 \begin{thebibliography}{breitestes Label}
 \addcontentsline{toc}{section}{Bibliography}
