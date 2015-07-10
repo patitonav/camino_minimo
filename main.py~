@@ -344,7 +344,7 @@ RUNS = 100
 
 
 def main():
-    MAX_ITERATIONS = 2000
+    MAX_ITERATIONS = 1000
     INITIAL_POPULATION = 100
     avg_iterations = 0
     min_iterations = MAX_ITERATIONS

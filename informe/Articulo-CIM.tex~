@@ -107,23 +107,23 @@ El camino óptimo obtenido tiene un valor de fitness de 10. Además, el tiempo pro
 
 \begin{figure}[!hbp]
 	\begin{center}
-		\includegraphics[width=0.7\textwidth]{graf-aptitud.PNG}
+		\includegraphics[width=0.975\textwidth]{graf-aptitud.PNG}
 	\end{center}
-	\caption{Valores de aptitud en 100 ejecuciónes para encontrar una solución óptima.} \label{fig002}
+	\caption{Valores de aptitud en 100 ejecuciónes para encontrar una solución óptima.} \label{fig003}
 \end{figure}
 
 \begin{figure}[!hbp]
 	\begin{center}
-		\includegraphics[width=0.7\textwidth]{graf-tiempo.PNG}
+		\includegraphics[width=0.975\textwidth]{graf-tiempo.PNG}
 	\end{center}
-	\caption{Tiempo promedio de procesamiento en 100 ejecuciónes del programa para distintos tamaños de población inicial.} \label{fig003}
+	\caption{Tiempo promedio de procesamiento en 100 ejecuciónes del programa para distintos tamaños de población inicial.} \label{fig004}
 \end{figure}
 
 \begin{figure}[!hbp]
 	\begin{center}
-		\includegraphics[width=0.7\textwidth]{graf-iteraciones-relativas.PNG}
+		\includegraphics[width=0.975\textwidth]{graf-iteraciones-relativas.PNG}
 	\end{center}
-	\caption{Valores normalizados de iteraciones en 100 ejecuciónes para encontrar una solución óptima.} \label{fig004}
+	\caption{Valores normalizados de iteraciones en 100 ejecuciónes para encontrar una solución óptima.} \label{fig005}
 \end{figure}
 
 En los gráficos se puede apreciar que la cantidad promedio y necesaria de iteraciones baja según la población inicial. No obstante, la cantidad de tiempo no es monótona y ofrece su óptimo alrededor de una población de 1000 individuos.\par
@@ -133,8 +133,8 @@ En los gráficos se puede apreciar que la cantidad promedio y necesaria de iterac
 \section{Conclusiones}
 
 De la Figura 1 se deduce, a partir de sus valores registrados de aptitud e iteraciones máximas, que para un valor de 2000 soluciones iniciales se llegó a la óptima (de una aptitud igual a 10) en todas las 100 corridas del programa. Mientras que para el resto de los valores medidos si bien en la mayoria de los casos se llego a la solucion optima, en otros no lo hizo, llegando en los peores casos a 28 (esto se registro entre 1\% y 3\% de las corridas).\par
-Tambien se puede observar que el incremento de la poblacion inicial tiene una gran insidencia sobre la cantidad de iteraciones necesarias para obterner la solucion optima. A medida que duplicamos la poblacion inicial, la cantidad de iteraciones promedio para obtener la solucion optima baja de la siguiente forma: 40, 29, 15, 6.\par 
-Como podemos observar, los tiempos de ejecucion no se ven en gran medida afectados por el incremento de la poblacion inicial, como si lo hacen, por el incremento de iteraciones. Esto ultimo nos permite concluir, que tanto las mutaciones como las cruzas son muy costosas a nivel computacional en nuestro algoritmo.\par
+Tambien se puede observar que el incremento de la poblacion inicial tiene una gran insidencia sobre la cantidad de iteraciones necesarias para obterner la solucion optima. A medida que duplicamos la poblacion inicial, la cantidad de iteraciones promedio para obtener la solucion optima baja de la siguiente forma: 40, 29, 15, 6. \par 
+Como podemos observar, los tiempos de ejecucion no se ven en gran medida afectados por el incremento de la poblacion inicial, como si lo hacen, por el incremento de iteraciones. Esto ultimo nos permite concluir, que tanto las mutaciones como las cruzas son muy costosas a nivel computacional en nuestro algoritmo.
 
 \newpage
 

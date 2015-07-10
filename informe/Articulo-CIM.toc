@@ -1,0 +1,11 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {1}Introduccion}{1}
+\contentsline {section}{\numberline {2}Descripcion del problema}{2}
+\contentsline {subsection}{\numberline {2.1}Modelizacion}{2}
+\contentsline {subsubsection}{\numberline {2.1.1}Representacion del dep\'osito en la matriz}{2}
+\contentsline {subsection}{\numberline {2.2}Consideraciones}{2}
+\contentsline {section}{\numberline {3}Soluci\'on}{3}
+\contentsline {section}{\numberline {4}Resultados}{3}
+\contentsline {section}{\numberline {5}Conclusiones}{3}
+\contentsline {section}{Bibliograf\'{\i }a}{6}
+\contentsline {section}{Bibliography}{6}
